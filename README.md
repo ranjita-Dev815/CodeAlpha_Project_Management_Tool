@@ -2,7 +2,7 @@
 
 A full-stack **MERN** project management application where teams can create projects, assign tasks, and track progress in one place. Built as part of the **CodeAlpha Full Stack Development Internship**.
 
-🔗 **Live Demo (Vercel):** https://YOUR-APP.vercel.app
+🔗 **Live Demo (Vercel):** https://code-alpha-project-management-tool-five.vercel.app
 🔗 **Live Demo (Render):** https://codealpha-project-management-tool-ur31.onrender.com
 
 
