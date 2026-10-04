@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express'), mongoose = require('mongoose'), bcrypt = require('bcryptjs'),
   jwt = require('jsonwebtoken'), cors = require('cors'), http = require('http'), { Server } = require('socket.io');
 
@@ -92,6 +93,10 @@ app.delete('/api/tasks/:id', auth, h(async (req, res) => {
   const t = await Task.findById(req.params.id); await mine(t.project, req.uid);
   await t.deleteOne(); ping(t.project, `Task deleted: ${t.title}`); res.json({ ok: true });
 }));
+// ---------- Serve React build (production) ----------
+const dist = path.join(__dirname, '../client/dist');
+app.use(express.static(dist));
+app.get('*', (req, res) => res.sendFile(path.join(dist, 'index.html')));
 
 // ---------- Real-time ----------
 io.on('connection', (s) => s.on('join', (pid) => s.join(String(pid))));
