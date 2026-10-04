@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { io } from 'socket.io-client';
-
+ 
+const API_URL = import.meta.env.VITE_API_URL || '';
+ 
 const api = async (path, method = 'GET', body) => {
-  const r = await fetch('/api' + path, {
+  const r = await fetch(API_URL + '/api' + path, {
     method, body: body && JSON.stringify(body),
     headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + (localStorage.token || '') },
   });
@@ -11,7 +13,7 @@ const api = async (path, method = 'GET', body) => {
   return d;
 };
 const COLS = [['todo', 'To do'], ['doing', 'In progress'], ['done', 'Done']];
-
+ 
 function Auth({ onAuth }) {
   const [mode, setMode] = useState('login'), [f, setF] = useState({ name: '', email: '', password: '' }), [err, setErr] = useState('');
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
@@ -35,7 +37,7 @@ function Auth({ onAuth }) {
     </form>
   );
 }
-
+ 
 function Card({ t, members, reload }) {
   const [open, setOpen] = useState(false), [text, setText] = useState('');
   const patch = (b) => api('/tasks/' + t._id, 'PATCH', b).then(reload);
@@ -69,13 +71,13 @@ function Card({ t, members, reload }) {
     </div>
   );
 }
-
+ 
 function Board({ project, notify, reloadProjects }) {
   const [tasks, setTasks] = useState([]), [title, setTitle] = useState(''), [email, setEmail] = useState(''), [pri, setPri] = useState('medium'), [due, setDue] = useState('');
   const load = useCallback(() => api(`/projects/${project._id}/tasks`).then(setTasks).catch((e) => notify(e.message)), [project._id]);
   useEffect(() => {
     load();
-    const s = io(); s.emit('join', project._id);
+    const s = io(API_URL || undefined); s.emit('join', project._id);
     s.on('connect', () => s.emit('join', project._id));
     s.on('task:changed', (msg) => { load(); notify(msg); });
     return () => s.disconnect();
@@ -117,7 +119,7 @@ function Board({ project, notify, reloadProjects }) {
     </section>
   );
 }
-
+ 
 export default function App() {
   const [user, setUser] = useState(null), [ready, setReady] = useState(false), [projects, setProjects] = useState([]),
     [cur, setCur] = useState(null), [toast, setToast] = useState(''), [name, setName] = useState(''), [theme, setTheme] = useState(localStorage.theme || 'light');
