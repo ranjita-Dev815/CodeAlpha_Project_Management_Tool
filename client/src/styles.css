@@ -43,3 +43,43 @@ main{padding:24px;overflow-x:auto}
 .prog span{font-size:13px;color:var(--muted)}
 aside .theme{margin-top:auto;border-color:#2c5a52;text-align:center}aside .theme+a{margin-top:8px}
 .add select,.add input[type=date]{max-width:150px}
+/* ===== Mobile / Android friendly ===== */
+@media (max-width: 720px) {
+  main { padding: 12px; }
+  .auth { margin: 6vh auto; }
+
+  /* sidebar top bar ban jata hai */
+  aside { padding: 12px; gap: 6px; }
+  aside h1 { width: 100%; margin: 0 0 4px; }
+  aside form { flex: 1 1 100%; }
+  aside form input { width: 100%; }
+  aside .theme { margin-top: 0; }
+  aside .theme + a { margin-top: 0; }
+
+  /* header aur invite */
+  .board header { flex-direction: column; align-items: stretch; }
+  .board header form { display: flex; gap: 6px; width: 100%; }
+  .board header form input { flex: 1; min-width: 0; }
+
+  /* stats 2 columns mein */
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .stat { min-width: 0; padding: 8px 12px; }
+  .prog { grid-column: 1 / -1; min-width: 0; }
+
+  /* add task form wrap ho */
+  .add { flex-wrap: wrap; }
+  .add input, .add select, .add button,
+  .add input[type=date] { flex: 1 1 130px; max-width: none; min-width: 0; }
+  .add input[placeholder] { flex: 1 1 100%; }
+
+  /* board columns ek ke neeche ek */
+  .cols { grid-template-columns: 1fr; gap: 12px; }
+  .col { min-height: auto; }
+
+  /* tap karne mein aasan */
+  .row button { padding: 8px 12px; font-size: 14px; }
+  .x { padding: 4px 12px; }
+  .card:hover { box-shadow: none; }
+
+  .toast { left: 12px; right: 12px; bottom: 12px; text-align: center; }
+}
